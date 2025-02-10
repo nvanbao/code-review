@@ -18,16 +18,21 @@ public class PersonList {
         }
         return false;
     }
-    
+    deletePersonById() có nguy cơ ConcurrentModificationException
+
+\\ Khi duyệt ArrayList và xóa phần tử, dùng for-each dễ gây ConcurrentModificationException.
+
     public boolean deletePersonById(String id){
-        for(Person person : personList){
-            if(person.getId().equals(id)){
-                personList.remove(person);
-                return true;
-            }
+    Iterator<Person> iterator = personList.iterator();
+    while (iterator.hasNext()) {
+        Person person = iterator.next();
+        if (person.getId().equals(id)) {
+            iterator.remove(); // Tránh lỗi ConcurrentModificationException
+            return true;
         }
-        return false;
     }
+    return false;
+}
     
     public Person findPersonById(String id){
         for(Person person : personList){
